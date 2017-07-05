@@ -2,9 +2,8 @@
 var SERVER_ENDPOINT = 'http://www.soul.com.br/horarios/json/?callback=?';
 var SERVER_TIMEOUT = 20000;
 var UPDATE_DELAY = 2000;
-var ULTIMA_ATUALIZACAO = '01/06/2015 12:00'
-var APP_VERSION = '1.2.2';
-var isOnline = false; //navigator.onLine;
+var ULTIMA_ATUALIZACAO = '01/07/2017 12:00'
+var isOnline = navigator.onLine;
 
 if (!console || !console.log) {
   console = {log: function(){}};
@@ -574,18 +573,7 @@ $(function () {
         montaGrid(resultado);
         $('#conteudo_tabela').show();
         $('body,html').animate({scrollTop:btnPesquisar.position().top - 75}, 'slow');
-        
-        if (selecao.length == 0) {
-          selecao = $.map($('#selectLinhas')[0].options, function(o){return o.value;});
-        }
-        var pesquisa = {
-          linhas: selecao.join(','),
-          dia: selectDia.val(),
-          sentido: sentido,
-          horaInicial: horaInicial,
-          horaFinal: horaFinal,
-          resultadoLength: resultado.length
-        };
+
       }, 300);
     });
   });
