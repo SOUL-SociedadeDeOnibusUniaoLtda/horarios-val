@@ -3,7 +3,7 @@ var SERVER_ENDPOINT = 'http://www.soul.com.br/horarios/json/?callback=?';
 var SERVER_TIMEOUT = 20000;
 var UPDATE_DELAY = 2000;
 var ULTIMA_ATUALIZACAO = '01/07/2017 12:00'
-var isOnline = navigator.onLine;
+var isOnline = false; //navigator.onLine;
 
 if (!console || !console.log) {
   console = {log: function(){}};
