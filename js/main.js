@@ -36,9 +36,6 @@ function checkUpdatesFromSoul() {
     if (response.horarios_hash) {
       localStorage.setItem('horarios_hash', response.horarios_hash);
       atualizaTabelaHorarios(response.horarios);
-      
-      //recarrega a lista de linhas 
-      $('#selectSentido').change();
     }
     
     if (response.noticias_hash) {
@@ -91,52 +88,6 @@ function getUltimaAtualizacaoISOString() {
 
 function syncronizaNoticias() {
   localStorage.setItem('tabelaNoticias', JSON.stringify(tabelaNoticias));
-}
-
-function getLinhas() {
-  //tabelaHorarios
-  
-  var linhasAgrupadas = {};
-  
-  for (var i = 0; i < tabelaHorarios.length; i++ ) {
-    var linhaAtual = tabelaHorarios[i];
-    if (!linhasAgrupadas[linhaAtual.sentido]) {
-      linhasAgrupadas[linhaAtual.sentido] = {};
-    }
-    
-    if (!linhasAgrupadas[linhaAtual.sentido][linhaAtual.linha]) {
-      linhasAgrupadas[linhaAtual.sentido][linhaAtual.linha] = 0;
-    }
-    
-    linhasAgrupadas[linhaAtual.sentido][linhaAtual.linha]++;
-  }
-  
-  for (var sentido in linhasAgrupadas) {
-    var linhas = [];
-    for (var linha in linhasAgrupadas[sentido]) {
-      linhas.push(linha);
-    }
-    linhas.sort();
-    linhasAgrupadas[sentido] = linhas;
-  }
-  return linhasAgrupadas;
-}
-
-function getSentidos() {
-  
-  var sentidosCadastradas = {};
-  for (var i = 0; i < tabelaHorarios.length; i++ ) {
-    if (!sentidosCadastradas[tabelaHorarios[i].sentido]) {
-      sentidosCadastradas[tabelaHorarios[i].sentido] = 0;
-    }
-    sentidosCadastradas[tabelaHorarios[i].sentido]++;
-  }
-  
-  var sentidos = [];
-  for (var sentido in sentidosCadastradas) {
-    sentidos.push(sentido);
-  }
-  return sentidos;
 }
 
 function busca(filtro) {
@@ -300,7 +251,6 @@ $(function () {
   var txtHoraInicial = $('#txtHoraInicial');
   var txtHoraFinal = $('#txtHoraFinal');
   var selectDia = $('#selectDia');
-  var selectSentido = $('#selectSentido');
   var selectLinhas = $('#selectLinhas');
   var btnPesquisar = $('#btnPesquisar');
   var btnVoltar = $('#btnVoltar');
@@ -480,41 +430,11 @@ $(function () {
   } else if (diaSemana == 6) {
     selectDia.val('SABADO');
   }
-
-  /*
-  $(getSentidos()).each(function(i, sentido){
-	
-    var optionSentido = document.createElement('option');
-    optionSentido.value = sentido;
-    optionSentido.text = sentido;
-    
-    selectSentido.append(optionSentido);
-  });
-  */
-  
-  var atualizaLinhas = function() {
-    var linhasAtual = selectLinhas.val();
-    selectLinhas.find('option').remove();
-    
-    var linhas = getLinhas()[selectSentido.val()];
-    $(linhas).each(function(i, linha){
-      var optionLinha = document.createElement('option');
-      optionLinha.value = linha;
-      optionLinha.text = capitalize(linha);
-    
-      selectLinhas.append(optionLinha);
-    });
-    
-    selectLinhas.val(linhasAtual);
-  }
-  
-  selectSentido.change(atualizaLinhas);
-  atualizaLinhas();
-  
   
   if (!selectLinhas.attr('multiple')) {
     selectLinhas.attr('multiple', true);
   }
+  selectLinhas.val([]);
   
   //var android = getAndroidVersion();
   //if (android && android < '4') {}
@@ -534,19 +454,18 @@ $(function () {
         var selecao = selectLinhas.val() || [];
         
         var resultado = [];
-        var sentido = selectSentido.val();
         var horaInicial = formatTime(txtHoraInicial.val());
         var horaFinal = formatTime(txtHoraFinal.val());
         
         if (horaInicial < horaFinal) {
           resultado = busca(function(item){
           
-            return (item.descricao.toLowerCase().indexOf(txtPesquisar.val().toLowerCase()) != -1)
-              && (selecao.length == 0 || selecao.indexOf(item.linha) != -1)
+            return (
+              (selecao.length == 0 || selecao.indexOf(item.linha + '|' + item.sentido) != -1)
               && item.dia == selectDia.val()
-              && item.sentido == sentido
               && item.hora >= horaInicial
-              && item.hora <= horaFinal;
+              && item.hora <= horaFinal
+            );
           });
         } else {
           resultado = busca(function(item){
@@ -602,7 +521,7 @@ function montaGrid(lista) {
     criaLinha(table, ['Hora', 'Linha', 'Descri&ccedil;&atilde;o'], 'thead');
     for (var i = 0; i < total_linhas; i++) {
       var linha = lista[i];
-      criaLinha(table, [linha.hora, capitalize(linha.linha), linha.descricao]);
+      criaLinha(table, [linha.hora, linha.linha, linha.descricao]);
     }
   }
 }
