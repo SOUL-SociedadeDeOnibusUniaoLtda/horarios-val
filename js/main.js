@@ -192,7 +192,7 @@ function carregaAreaNoticias() {
     
     noticiaArea.find('h4').text(formatData(noticia.data));
     noticiaArea.find('#noticia_titulo').text(noticia.titulo);
-    noticiaArea.find('#noticia_texto').html(noticia.texto.split("\n").join("<br />"));
+    noticiaArea.find('#noticia_texto').html(noticia.texto);
     
     if (!noticia.lida) {
       noticiaArea
@@ -208,12 +208,6 @@ function carregaAreaNoticias() {
       if (!noticia.lida) {
         noticia.lida = true;
         syncronizaNoticias();
-        
-        var noticiaLog = {
-          id: noticia.id,
-          data: noticia.data,
-          titulo: noticia.titulo
-        };
       }
       
       $(this)
