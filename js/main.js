@@ -1,5 +1,5 @@
 //autor: jeanroldao@gmail.com
-var SERVER_ENDPOINT = 'http://www.soul.com.br/horarios/json/?callback=?';
+var SERVER_ENDPOINT = 'http://localhost:8000/json?callback=?';
 var SERVER_TIMEOUT = 20000;
 var UPDATE_DELAY = 2000;
 var ULTIMA_ATUALIZACAO = '01/07/2017 12:00'
@@ -140,7 +140,7 @@ function formatData(data) {
     var ano = data.getFullYear();
    return dia + '/' + mes + '/' + ano;
   } else {
-    return data.split('-').reverse().join('/');
+    return data.split(' ').shift().split('-').reverse().join('/');
   }
 }
 
