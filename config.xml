@@ -36,7 +36,7 @@
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="SplashScreenDelay" value="0" />
 
-  <!-- <icon src="img/ico_val.png" /> -->
+  <icon src="img/ico_val_app.png" />
   
   <access origin="*" />
  </widget>
