@@ -1,9 +1,9 @@
 //autor: jeanroldao@gmail.com
-var SERVER_ENDPOINT = 'http://localhost:8000/json?callback=?';
+var SERVER_ENDPOINT = 'http://kiweb.com.br/prototipo/val/json2/api.php?callback=?';
 var SERVER_TIMEOUT = 20000;
 var UPDATE_DELAY = 2000;
 var ULTIMA_ATUALIZACAO = '01/07/2017 12:00'
-var isOnline = false; //navigator.onLine;
+var isOnline = navigator.onLine;
 
 if (!console || !console.log) {
   console = {log: function(){}};
@@ -408,14 +408,9 @@ $(function () {
     $('.clsLabelLembrar').toggle();
   });
  
-  var horaini = new Date();
-  horaini.setHours(horaini.getHours()-1);
-  txtHoraInicial.val(formatTime(horaini));
-  
-  var horafim = new Date();
-  horafim.setHours(horafim.getHours() + 1);
-  
-  txtHoraFinal.val(formatTime(horafim));
+  txtHoraInicial.val('05:00');
+
+  txtHoraFinal.val('01:00');
   
   var diaSemana = new Date().getDay();
   
@@ -453,7 +448,6 @@ $(function () {
         
         if (horaInicial < horaFinal) {
           resultado = busca(function(item){
-          
             return (
               (selecao.length == 0 || selecao.indexOf(item.linha + '|' + item.sentido) != -1)
               && item.dia == selectDia.val()
@@ -463,21 +457,19 @@ $(function () {
           });
         } else {
           resultado = busca(function(item){
-          
-            return (item.descricao.toLowerCase().indexOf(txtPesquisar.val().toLowerCase()) != -1)
-              && (selecao.length == 0 || selecao.indexOf(item.linha) != -1)
+            return (
+              (selecao.length == 0 || selecao.indexOf(item.linha + '|' + item.sentido) != -1)
               && item.dia == selectDia.val()
-              && item.sentido == sentido
-              && item.hora >= horaInicial;
+              && item.hora >= horaInicial
+            );
           });
           
           resultado = resultado.concat(busca(function(item){
-          
-            return (item.descricao.toLowerCase().indexOf(txtPesquisar.val().toLowerCase()) != -1)
-              && (selecao.length == 0 || selecao.indexOf(item.linha) != -1)
+            return (
+              (selecao.length == 0 || selecao.indexOf(item.linha + '|' + item.sentido) != -1)
               && item.dia == selectDia.val()
-              && item.sentido == sentido
-              && item.hora <= horaFinal;
+              && item.hora <= horaFinal
+            );
           }));
         }
         
