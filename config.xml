@@ -28,6 +28,7 @@
   
   <gap:plugin name="cordova-plugin-network-information" source="npm" />
   <gap:plugin name="cordova-plugin-datepicker" source="npm" />
+  <gap:plugin name="cordova-plugin-whitelist" source="npm" />
   
   <preference name="permissions" value="none"/>
   <preference name="phonegap-version" value="cli-6.5.0" />
@@ -39,4 +40,5 @@
   <icon src="img/ico_val_app.png" />
   
   <access origin="*" />
+  <allow-navigation href="*" />
  </widget>
