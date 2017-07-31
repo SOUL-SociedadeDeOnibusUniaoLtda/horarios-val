@@ -24,14 +24,11 @@
     <activity android:launchMode="singleInstance" />
   </gap:config-file>
 
-  <platform name="ios">
-    <icon gap:platform="android" src="img/ico_val_app.png" />
-    <icon gap:platform="ios" src="img/ico_val_app_57.png" width="57" height="57" />
-    <icon gap:platform="ios" src="img/ico_val_app_72.png" width="72" height="72" />
-    <icon gap:platform="ios" src="img/ico_val_app_76.png" width="76" height="76"/>
-    <icon gap:platform="ios" src="img/ico_val_app_120.png" width="120" height="120"/>
-    <icon gap:platform="ios" src="img/ico_val_app_152.png" width="152" height="152"/>
-  </platform>
+  <icon gap:platform="ios" src="img/ico_val_app_57.png" width="57" height="57" />
+  <icon gap:platform="ios" src="img/ico_val_app_72.png" width="72" height="72" />
+  <icon gap:platform="ios" src="img/ico_val_app_76.png" width="76" height="76"/>
+  <icon gap:platform="ios" src="img/ico_val_app_120.png" width="120" height="120"/>
+  <icon gap:platform="ios" src="img/ico_val_app_152.png" width="152" height="152"/>
 
   <feature name="http://api.phonegap.com/1.0/device"/>
   
