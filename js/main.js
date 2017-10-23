@@ -1,5 +1,5 @@
 //autor: jeanroldao@gmail.com
-var SERVER_ENDPOINT = 'http://kiweb.com.br/prototipo/val/json2/api.php?callback=?';
+var SERVER_ENDPOINT = 'http://www.viacaoalvorada.com.br/json2/api.php?callback=?';
 var SERVER_TIMEOUT = 20000;
 var UPDATE_DELAY = 2000;
 var ULTIMA_ATUALIZACAO = '01/07/2017 12:00'
