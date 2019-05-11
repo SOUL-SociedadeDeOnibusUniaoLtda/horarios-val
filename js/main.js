@@ -37,29 +37,8 @@ function checkUpdatesFromSoul() {
       localStorage.setItem('horarios_hash', response.horarios_hash);
       atualizaTabelaHorarios(response.horarios);
     }
-	
-	var selectLinhas = $('#selectLinhas');
-	var linhasAtual = selectLinhas.val();
-	selectLinhas.find('option').remove();
-    
-    var linhas = {};
-	tabelaHorarios.forEach(function(horario) {
-		linhas[horario.linhaFiltro] = true;
-	});
-	
-	Object.keys(linhas).sort(function(a, b) {
-		var sa = a.split(' ');
-		var sb = b.split(' ');
-		return String(sa[1]).localeCompare(String(sb[1]))
-			|| (sa[1] == '103' ? -String(sa[2]).localeCompare(String(sb[2])) : String(sa[2]).localeCompare(String(sb[2])));
-	}).forEach(function(linha) {
-      var optionLinha = document.createElement('option');
-      optionLinha.value = linha;
-      optionLinha.text = linha;
-    
-      selectLinhas.append(optionLinha);
-	})
 
+	atualizaListaLinha();
     
     if (response.noticias_hash) {
       localStorage.setItem('noticias_hash', response.noticias_hash);
@@ -90,6 +69,30 @@ function checkUpdatesFromSoul() {
     $('#span_ultima_atualizacao').removeClass('hidden');
     atualizaTextoDeUltimaAtualizacao();
   });
+}
+
+function atualizaListaLinha() {	
+	var selectLinhas = $('#selectLinhas');
+	var linhasAtual = selectLinhas.val();
+	selectLinhas.find('option').remove();
+	
+	var linhas = {};
+	tabelaHorarios.forEach(function(horario) {
+		linhas[horario.linhaFiltro] = true;
+	});
+	
+	Object.keys(linhas).sort(function(a, b) {
+		var sa = a.split(' ');
+		var sb = b.split(' ');
+		return String(sa[1]).localeCompare(String(sb[1]))
+			|| (sa[1] == '103' ? -String(sa[2]).localeCompare(String(sb[2])) : String(sa[2]).localeCompare(String(sb[2])));
+	}).forEach(function(linha) {
+	  var optionLinha = document.createElement('option');
+	  optionLinha.value = linha;
+	  optionLinha.text = linha;
+	
+	  selectLinhas.append(optionLinha);
+	})
 }
 
 function atualizaTextoDeUltimaAtualizacao() {
