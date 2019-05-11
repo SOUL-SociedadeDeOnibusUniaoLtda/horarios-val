@@ -37,6 +37,29 @@ function checkUpdatesFromSoul() {
       localStorage.setItem('horarios_hash', response.horarios_hash);
       atualizaTabelaHorarios(response.horarios);
     }
+	
+	var selectLinhas = $('#selectLinhas');
+	var linhasAtual = selectLinhas.val();
+	selectLinhas.find('option').remove();
+    
+    var linhas = {};
+	tabelaHorarios.forEach(function(horario) {
+		linhas[horario.linhaFiltro] = true;
+	});
+	
+	Object.keys(linhas).sort(function(a, b) {
+		var sa = a.split(' ');
+		var sb = b.split(' ');
+		return String(sa[1]).localeCompare(String(sb[1]))
+			|| (sa[1] == '103' ? -String(sa[2]).localeCompare(String(sb[2])) : String(sa[2]).localeCompare(String(sb[2])));
+	}).forEach(function(linha) {
+      var optionLinha = document.createElement('option');
+      optionLinha.value = linha;
+      optionLinha.text = linha;
+    
+      selectLinhas.append(optionLinha);
+	})
+
     
     if (response.noticias_hash) {
       localStorage.setItem('noticias_hash', response.noticias_hash);
@@ -378,24 +401,27 @@ $(function () {
     
     if (window.cordova) {
       document.addEventListener("backbutton", noticiasVoltar, false);
-    } else if (history.pushState) {
+    } 
+	/*else if (history.pushState) {
       if (document.origin == 'null') {
         window.location = '#noticias';
       } else {
         history.pushState({page:'noticias'}, 'noticias', '/noticias');
       }
       window.onpopstate = noticiasVoltar;
-    }
+    }*/
   });
   
+  /*
   if (!window.cordova && history.pushState && document.origin != 'null') {
     history.replaceState({page:'home'}, 'home', '/home');
     $('#btnVoltarNoticias').click(function(){
       history.back();
     });
   } else {  
-    $('#btnVoltarNoticias').click(noticiasVoltar);
-  }
+  */
+  $('#btnVoltarNoticias').click(noticiasVoltar);
+  
   
   carregaAreaNoticias();
   
@@ -449,7 +475,7 @@ $(function () {
         if (horaInicial < horaFinal) {
           resultado = busca(function(item){
             return (
-              (selecao.length == 0 || selecao.indexOf(item.linha + '|' + item.sentido) != -1)
+              (selecao.length == 0 || selecao.indexOf(item.linhaFiltro) != -1)
               && item.dia == selectDia.val()
               && item.hora >= horaInicial
               && item.hora <= horaFinal
@@ -458,7 +484,7 @@ $(function () {
         } else {
           resultado = busca(function(item){
             return (
-              (selecao.length == 0 || selecao.indexOf(item.linha + '|' + item.sentido) != -1)
+              (selecao.length == 0 || selecao.indexOf(item.linhaFiltro) != -1)
               && item.dia == selectDia.val()
               && item.hora >= horaInicial
             );
@@ -466,7 +492,7 @@ $(function () {
           
           resultado = resultado.concat(busca(function(item){
             return (
-              (selecao.length == 0 || selecao.indexOf(item.linha + '|' + item.sentido) != -1)
+              (selecao.length == 0 || selecao.indexOf(item.linhaFiltro) != -1)
               && item.dia == selectDia.val()
               && item.hora <= horaFinal
             );
